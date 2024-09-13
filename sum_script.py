@@ -4,7 +4,7 @@ def sum_of_two_numbers(num1, num2) -> float:
 
 def main():
     num1 = 1
-    num2 = 2
+    num2 = 4
     result = sum_of_two_numbers(num1, num2)
     print(result)
     
