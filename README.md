@@ -1,8 +1,18 @@
-# mlops_course_structure
+# Курс по MLOps
 
 <a target="_blank" href="https://cookiecutter-data-science.drivendata.org/">
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
+
+## Таблица с вашими успехами
+Ссылка - [тык](https://docs.google.com/spreadsheets/d/1mSGB87lscCV_SEV8mty0V5Y0cbYt3EdKplVU3eWJG0o/edit?usp=sharing)
+
+## Дедлайны по лабам
+| Номер лабы | Soft Deadline ☀️ | Hard Deadline ⚡ | 
+|------------|-------------------|------------------|
+| 1 Git      | 06.10.2024 23:59  | 22.12.2024 23:59 |
+| 2 Libs     | 06.10.2024 23:59  | 22.12.2024 23:59 |
+| 3 DVC      | TBA               | TBA              | 
 
 Repo made with cookiecutter for MLOps NUST MISIS course
 
