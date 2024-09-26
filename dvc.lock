@@ -1,0 +1,57 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: python src/dataset.py params.yaml
+    deps:
+    - path: src/dataset.py
+      hash: md5
+      md5: 9ff8e8cf9d80ad239891c9b1e085b582
+      size: 1417
+    params:
+      params.yaml:
+        data_params:
+          raw_data_path: data/raw/data.csv
+          n_samples: 300
+          n_features: 30
+          test_size: 0.3
+          train_data_path: data/processed/train.csv
+          test_data_path: data/processed/test.csv
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 71f34e62db235b34d62ada6d049c1a20
+      size: 53683
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 7c1ec34367c1780c651d73f8dd526843
+      size: 124984
+  train_model:
+    cmd: python src/modeling/train.py params.yaml
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 71f34e62db235b34d62ada6d049c1a20
+      size: 53683
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 7c1ec34367c1780c651d73f8dd526843
+      size: 124984
+    - path: src/modeling/train.py
+      hash: md5
+      md5: 5ef0c42348f402f1d8278ae2dc22fad8
+      size: 1492
+    params:
+      params.yaml:
+        train_params:
+          n_estimators: 200
+          model_path: models/model.pkl
+          metrics_path: reports/metrics.json
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 65d463b2cea464a483efdea1b978f62f
+      size: 525542
+    - path: reports/metrics.json
+      hash: md5
+      md5: 708984922d850b0c5aab3c4973c49cad
+      size: 31

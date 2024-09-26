@@ -1,20 +1,18 @@
-from pathlib import Path
-
 import typer
 from loguru import logger
 from tqdm import tqdm
 
-from src.config import PROCESSED_DATA_DIR
+from src.entities.params import read_pipeline_params
 
 app = typer.Typer()
 
 
 @app.command()
-def main(input_path: Path, output_path: Path):
+def main(params_path: str):
     """
     Function for generating features on your dataset
     """
-    pass
+    params = read_pipeline_params(params_path)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,4 @@
+[core]
+    remote = local_fs
+['remote "local_fs"']
+    url = ../dvc_fs
