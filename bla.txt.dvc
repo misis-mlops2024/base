@@ -1,0 +1,5 @@
+outs:
+- md5: 64d76c822bcf27fff39b4cc44a862c99
+  size: 30
+  hash: md5
+  path: bla.txt
