@@ -14,7 +14,7 @@ for _ in range(100):
     random_input = [[random.random() for _ in range(4)]]
     features = [f"feat{i+1}" for i in range(4)]
     
-    response = requests.get("http://localhost:8000/predict/", 
+    response = requests.get("http://localhost:80/predict/", 
                             json={"data": random_input, "features": features})
     logger.info(response.json())
     sleep(1)
