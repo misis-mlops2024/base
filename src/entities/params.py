@@ -5,12 +5,14 @@ from marshmallow_dataclass import class_schema
 
 from .train_params import TrainParams
 from .data_params import DataParams
+from .sql_params import SQLParams
 
 
 @dataclass()
 class PipelineParams:
     train_params: TrainParams
     data_params: DataParams
+    sql_params: SQLParams
     random_state: int
     
     

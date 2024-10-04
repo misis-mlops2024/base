@@ -11,6 +11,7 @@ from loguru import logger
 from tqdm import tqdm
 
 from src.entities.params import read_pipeline_params
+from src.utils import get_sql_connection
 
 app = typer.Typer()
 
@@ -18,11 +19,12 @@ app = typer.Typer()
 @app.command()
 def main(params_path: str):
     params = read_pipeline_params(params_path)
-    train = pd.read_csv(params.data_params.train_data_path)
+    con = get_sql_connection(params)
+    train = pd.read_sql_table(params.data_params.train_sql_tablename, con)
     X_train = train.drop("target", axis=1)
     y_train = train["target"].values.reshape(-1, 1)
 
-    test = pd.read_csv(params.data_params.test_data_path)
+    test = pd.read_sql_table(params.data_params.test_sql_tablename, con)
     X_test = test.drop("target", axis=1)
     y_test = test["target"].values.reshape(-1, 1)
 

@@ -6,9 +6,11 @@ import typer
 import sklearn
 import pandas as pd
 import numpy as np
+import sqlalchemy
 from loguru import logger
 from tqdm import tqdm
 from src.entities.params import read_pipeline_params
+from src.utils import get_sql_connection
 
 app = typer.Typer()
 
@@ -37,6 +39,14 @@ def main(params_path: str):
 
     test.to_csv(params.data_params.test_data_path, index=False)
     logger.info(f"Save test sample to the path: {params.data_params.test_data_path}")
+    
+    database_connection = get_sql_connection(params)
+    
+    train.to_sql(con=database_connection, name=params.data_params.train_sql_tablename, if_exists='replace', index=False)
+    logger.info(f"Save train sample to SQL: {params.sql_params.database}.{params.data_params.train_sql_tablename}")
+    
+    test.to_sql(con=database_connection, name=params.data_params.test_sql_tablename, if_exists='replace', index=False)
+    logger.info(f"Save test sample to SQL: {params.sql_params.database}.{params.data_params.test_sql_tablename}")
 
 
 if __name__ == "__main__":
