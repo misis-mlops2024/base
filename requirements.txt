@@ -86,7 +86,6 @@ pytest-cov==5.0.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2024.2
-pywin32==306
 PyYAML==6.0.2
 requests==2.32.3
 rich==13.8.1
@@ -103,7 +102,6 @@ six==1.16.0
 smmap==5.0.1
 SQLAlchemy==2.0.35
 sqltrie==0.11.1
-src==0.1.0
 tabulate==0.9.0
 threadpoolctl==3.5.0
 tomli==2.0.1
