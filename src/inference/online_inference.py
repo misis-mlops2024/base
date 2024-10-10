@@ -29,8 +29,10 @@ def make_predict(data: InputResponse, model):
     pred = model.predict_proba(data)[:, 1]
     return PredictResponse(output=pred)
 
+
 ml_models = {}
 params = read_pipeline_params("params.yaml")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -42,6 +44,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
 
 @app.get("/")
 def main():

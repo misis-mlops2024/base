@@ -22,7 +22,7 @@ services:
           cpus: '1'
           memory: 4G
     networks:
-      - mysql
+      - 03_train_ml_model_mysql
 
   train_model:
     build:
@@ -31,12 +31,12 @@ services:
     depends_on: 
     - mysql_db
     networks:
-      - mysql
+      - 03_train_ml_model_mysql
 
 
 volumes:
   mysql-data:
 
 networks:
-  mysql:
+  03_train_ml_model_mysql:
     driver: bridge

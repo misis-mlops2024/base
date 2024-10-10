@@ -5,43 +5,55 @@ stages:
     deps:
     - path: src/dataset.py
       hash: md5
-      md5: 9404bd901485e14b3380c831df3b9f16
-      size: 1428
+      md5: 980d294bbd3b055b3025410a21f55189
+      size: 2035
     params:
       params.yaml:
         data_params:
           raw_data_path: data/raw/data.csv
           n_samples: 100
-          n_features: 30
+          n_features: 4
           test_size: 0.2
           train_data_path: data/processed/train.csv
           test_data_path: data/processed/test.csv
+          train_sql_tablename: train_data
+          test_sql_tablename: test_data
+        sql_params:
+          username: mlflow
+          password: password
+          database: postgres
+          ip: localhost
     outs:
     - path: data/processed/test.csv
       hash: md5
-      md5: e71ea8b2eb5eda62c206f42f72c14250
-      size: 12103
+      md5: 0e7f9cef3cffceffe7cda7f871906065
+      size: 1673
     - path: data/processed/train.csv
       hash: md5
-      md5: bf60c9488984e4ee6dec78373f4d1c68
-      size: 47728
+      md5: 63cdf18c5a871f2d283c398d53a23731
+      size: 6661
   train_model:
     cmd: python src/modeling/train.py params.yaml
     deps:
     - path: data/processed/test.csv
       hash: md5
-      md5: e71ea8b2eb5eda62c206f42f72c14250
-      size: 12103
+      md5: 0e7f9cef3cffceffe7cda7f871906065
+      size: 1673
     - path: data/processed/train.csv
       hash: md5
-      md5: bf60c9488984e4ee6dec78373f4d1c68
-      size: 47728
+      md5: 63cdf18c5a871f2d283c398d53a23731
+      size: 6661
     - path: src/modeling/train.py
       hash: md5
-      md5: c14cfed237c6d07b698b2bcd7e6d69c3
-      size: 1464
+      md5: 008745e29f6e1ea669ba117fc77ee9d0
+      size: 1787
     params:
       params.yaml:
+        sql_params:
+          username: mlflow
+          password: password
+          database: postgres
+          ip: localhost
         train_params:
           n_estimators: 100
           model_path: models/model.pkl
@@ -49,9 +61,9 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: b803cf8f6426647c6ee2e66203228e7e
-      size: 162020
+      md5: 3327a91d3c14ec42066d24eb00cd2e26
+      size: 185907
     - path: reports/metrics.json
       hash: md5
-      md5: c4112f1a967303a72828bc070e8ee646
+      md5: 33426adc17d9a5671407ec9248b3301d
       size: 31

@@ -1,0 +1,19 @@
+name: MLOps course example
+
+python_env: python_env.yaml
+# or
+# conda_env: my_env.yaml
+# or
+# docker_env:
+#    image:  mlflow-docker-example
+
+entry_points:
+  dataset:
+    parameters:
+      data_file: {type: path, default: params.yaml}
+    command: "python src/dataset.py {data_file}"
+  
+  train:
+    parameters:
+      data_file: {type: path, default: params.yaml}
+    command: "python src/modeling/train.py {data_file}"

@@ -1,7 +1,7 @@
 sql_params:
-  username: user
+  username: mlflow
   password: password
-  database: stage
+  database: postgres
   ip: localhost
 data_params:
   raw_data_path: "data/raw/data.csv"

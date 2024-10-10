@@ -34,11 +34,11 @@ def main(params_path: str):
     )
     logger.info(f"Split data into train ({train.shape}) and test ({test.shape})")
 
-    # train.to_csv(params.data_params.train_data_path, index=False)
-    # logger.info(f"Save train sample to the path: {params.data_params.train_data_path}")
+    train.to_csv(params.data_params.train_data_path, index=False)
+    logger.info(f"Save train sample to the path: {params.data_params.train_data_path}")
 
-    # test.to_csv(params.data_params.test_data_path, index=False)
-    # logger.info(f"Save test sample to the path: {params.data_params.test_data_path}")
+    test.to_csv(params.data_params.test_data_path, index=False)
+    logger.info(f"Save test sample to the path: {params.data_params.test_data_path}")
     
     database_connection = get_sql_connection(params)
     
