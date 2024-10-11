@@ -22,9 +22,9 @@ os.environ['MLFLOW_S3_ENDPOINT_URL'] = 'http://localhost:9000'
 mlflow.set_tracking_uri("http://localhost:5050")
 mlflow.set_registry_uri("http://localhost:5050")
 
-model_name = "my_model"
+model_name = "another_model"
 model_version = 'latest'
-model_alias = "champion"
+model_alias = "production"
 
 
 @app.command()

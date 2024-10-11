@@ -22,7 +22,7 @@ os.environ['MLFLOW_TRACKING_URI'] = 'http://localhost:5050'
 os.environ['MLFLOW_S3_ENDPOINT_URL'] = 'http://localhost:9000'
 mlflow.set_tracking_uri("http://localhost:5050")
 mlflow.set_registry_uri("http://localhost:5050")
-mlflow.set_experiment("project")
+mlflow.set_experiment("another_experiment")
 mlflow.autolog()
 
 
@@ -42,7 +42,7 @@ def main(params_path: str):
         y_test = test["target"].values.reshape(-1, 1)
         
         # Обучаем модель
-        model = sklearn.ensemble.RandomForestClassifier(n_estimators=params.train_params.n_estimators)
+        model = sklearn.ensemble.RandomForestClassifier(n_estimators=params.train_params.n_estimators)     
         model.fit(X_train, y_train)
         logger.info(f"Learn model {model}")
 
@@ -60,7 +60,7 @@ def main(params_path: str):
         
         # Логируем модель
         signature = infer_signature(X_test, model.predict(X_test))
-        mlflow.sklearn.log_model(sk_model=model, artifact_path="model", signature=signature, registered_model_name="my_model")
+        mlflow.sklearn.log_model(sk_model=model, artifact_path="model", signature=signature, registered_model_name="another_model")
         
         # Сохраняем файлики локально
         with open(params.train_params.model_path, "wb") as fin:
