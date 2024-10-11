@@ -11,6 +11,7 @@ from loguru import logger
 from tqdm import tqdm
 from src.entities.params import read_pipeline_params
 from src.utils import get_sql_connection
+from clearml import Task, Dataset
 
 app = typer.Typer()
 
@@ -21,6 +22,15 @@ def main(params_path: str):
     Function to generate dataset
     """
     params = read_pipeline_params(params_path)
+    
+    task = Task.init(project_name="my project", task_name="my task")
+    
+    # Создаем 
+    dataset = Dataset.create(
+        dataset_name='my dataset',
+        dataset_project="my project",
+    )
+    
     X, y = sklearn.datasets.make_classification(
         n_samples=params.data_params.n_samples, n_features=params.data_params.n_features
     )
@@ -40,13 +50,11 @@ def main(params_path: str):
     test.to_csv(params.data_params.test_data_path, index=False)
     logger.info(f"Save test sample to the path: {params.data_params.test_data_path}")
     
-    database_connection = get_sql_connection(params)
-    
-    train.to_sql(con=database_connection, name=params.data_params.train_sql_tablename, if_exists='replace', index=False)
-    logger.info(f"Save train sample to SQL: {params.sql_params.database}.{params.data_params.train_sql_tablename}")
-    
-    test.to_sql(con=database_connection, name=params.data_params.test_sql_tablename, if_exists='replace', index=False)
-    logger.info(f"Save test sample to SQL: {params.sql_params.database}.{params.data_params.test_sql_tablename}")
+    # Добавляем файлы в ClearMl Dataset (можно делать аналогично через CLI clearml-data)
+    dataset.add_files(path=params.data_params.train_data_path)
+    dataset.add_files(path=params.data_params.test_data_path)
+    dataset.upload()
+    dataset.finalize()
 
 
 if __name__ == "__main__":
