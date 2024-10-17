@@ -1,0 +1,158 @@
+version: '3.7'
+
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:2.9.0
+  depends_on:
+    - postgres
+  environment:
+    - LOAD_EX=n
+    - EXECUTOR=Local
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    - AIRFLOW__WEBSERVER__SECRET_KEY=FB0o_zt4e3Ziq3LdUUO7F2Z95cvFFx16hU8jTeR1ASM=
+    - AIRFLOW__CORE__FERNET_KEY=FB0o_zt4e3Ziq3LdUUO7F2Z95cvFFx16hU8jTeR1ASM=
+    - AIRFLOW__CORE__LOAD_EXAMPLES=True
+    - AIRFLOW__CORE__LOGGING_LEVEL=INFO
+  volumes:
+    - C:\Users\anana\Desktop\projs\2024\mlops_course\data\airflow\dags:/opt/airflow/dags
+    - C:\Users\anana\Desktop\projs\2024\mlops_course\data\airflow\logs:/opt/airflow/logs
+    - C:\Users\anana\Desktop\projs\2024\mlops_course\data\airflow\config:/opt/airflow/config
+    - C:\Users\anana\Desktop\projs\2024\mlops_course\data\airflow\plugins:/opt/airflow/plugins
+    - C:\Users\anana\Desktop\projs\2024\mlops_course\data\airflow\data:/opt/data
+  user: "${AIRFLOW_UID:-50000}:0"
+  networks:
+    - frontend
+
+services:
+  postgres:
+      image: postgres:9.6
+      environment:
+          - POSTGRES_USER=airflow
+          - POSTGRES_PASSWORD=airflow
+          - POSTGRES_DB=airflow
+      logging:
+          options:
+              max-size: 10m
+              max-file: "3"
+      ports:
+        - 5432:5432
+      networks:
+      - frontend
+
+  webserver:
+      << : *airflow-common
+      restart: always
+      depends_on:
+          - airflow-init
+      logging:
+          options:
+              max-size: 10m
+              max-file: "3"
+      ports:
+          - 8080:8080
+      command: webserver
+      healthcheck:
+          test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
+          interval: 30s
+          timeout: 30s
+          retries: 3
+
+  airflow-scheduler:
+    <<: *airflow-common
+    depends_on:
+      - airflow-init
+    command: scheduler
+    restart: always
+
+  airflow-init:
+      << : *airflow-common
+      entrypoint: /bin/bash
+      command:
+          - -c
+          - (airflow users list | grep "No data found") && ( airflow db init &&
+              airflow users create
+                --role Admin
+                --username airflow
+                --password airflow
+                --email airflow@airflow.com
+                --firstname airflow
+                --lastname airflow )
+
+  s3:
+    image: minio/minio
+    container_name: mlflow_s3
+    ports:
+      - 9000:9000
+      - 9001:9001
+    command: server /data --console-address ':9001'
+    environment:
+      - MINIO_ROOT_USER=mlflow
+      - MINIO_ROOT_PASSWORD=password
+    volumes:
+      - C:\Users\anana\Desktop\projs\2024\mlops_course\data\minio_data:/data
+
+  init_s3:
+    image: minio/mc
+    depends_on:
+      - s3
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc alias set minio http://s3:9000 mlflow password) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb minio/mlflow;
+      exit 0;
+      "
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5050:5000
+    environment:
+      - MLFLOW_S3_ENDPOINT_URL=http://s3:9000
+      - AWS_ACCESS_KEY_ID=mlflow
+      - AWS_SECRET_ACCESS_KEY=password
+    command: >
+      mlflow server
+        --default-artifact-root s3://mlflow/
+        --artifacts-destination s3://mlflow/
+        --host 0.0.0.0
+    depends_on:
+      - s3
+      - postgres
+      - init_s3
+    networks:
+      - frontend
+  
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - C:\Users\anana\Desktop\projs\2024\mlops_course\data\prometheus\prometheus.yml:/etc/prometheus/prometheus.yml
+      - C:\Users\anana\Desktop\projs\2024\mlops_course\data\prometheus\data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    expose:
+      - 9090
+    networks:
+    - frontend
+
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    networks:
+    - frontend
+
+networks:
+  frontend:
+    driver: bridge
+
+volumes:
+  postgres-db-volume:
