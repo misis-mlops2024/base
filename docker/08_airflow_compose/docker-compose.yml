@@ -2,7 +2,9 @@ version: '3.7'
 
 x-airflow-common:
   &airflow-common
-  image: apache/airflow:2.9.0
+  build:
+      context: .
+      dockerfile: DockerfileAirflow
   depends_on:
     - postgres
   environment:
@@ -153,6 +155,7 @@ services:
 networks:
   frontend:
     driver: bridge
+    external: true
 
 volumes:
   postgres-db-volume:

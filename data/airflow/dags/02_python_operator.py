@@ -58,14 +58,13 @@ with DAG(
     tags=["myexample"],
 ) as dag:
 
-    python_op = PythonOperator(
-        task_id="print_the_context", 
-        python_callable=print_context
-    )
+    python_op = PythonOperator(task_id="print_the_context", python_callable=print_context)
 
     for i in range(5):
         sleeping_task = PythonOperator(
-            task_id=f"sleep_for_{i}", python_callable=my_sleeping_function, op_kwargs={"random_base": i / 10}
+            task_id=f"sleep_for_{i}",
+            python_callable=my_sleeping_function,
+            op_kwargs={"random_base": i / 10},
         )
 
         python_op >> sleeping_task
@@ -76,7 +75,7 @@ with DAG(
         requirements=["colorama==0.4.0"],
         system_site_packages=False,
     )
-    
+
     sleeping_task >> virtualenv_task
 
 
