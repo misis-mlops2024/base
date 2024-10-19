@@ -31,10 +31,7 @@ dag = DAG(
 )
 
 branching = BranchPythonOperator(task_id="branching", python_callable=branching_func, dag=dag)
-
-more = BashOperator(task_id="more_0.5", bash_command='echo "Number is more than 0.5"')
-
-less = BashOperator(task_id="less_0.5", bash_command='echo "Number is less than 0.5"')
-
+more = BashOperator(task_id="more_0.5", bash_command='echo "Number is more than 0.5"', dag=dag)
+less = BashOperator(task_id="less_0.5", bash_command='echo "Number is less than 0.5"', dag=dag)
 
 branching >> [more, less]

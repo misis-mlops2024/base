@@ -7,8 +7,6 @@ import pendulum
 
 from airflow.models.dag import DAG
 from airflow.decorators import task
-from airflow.operators.bash import BashOperator
-from airflow.operators.email import EmailOperator
 from airflow.operators.python import PythonOperator, PythonVirtualenvOperator
 
 

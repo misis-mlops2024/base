@@ -8,6 +8,7 @@ from airflow.models.dag import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
+
 with DAG(
     dag_id="01_example",
     schedule="0 0 * * *",
