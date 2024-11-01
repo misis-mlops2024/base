@@ -1,0 +1,21 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: fastapi-ml
+  namespace: default
+  labels:
+    app: fastapi-ml
+spec:
+  containers:
+    - image: l3lush/online_inference:v3
+      name: fastapi-ml
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: config
+          mountPath: "/etc/config"
+          readOnly: true
+  volumes:
+    - name: config
+      configMap:
+        name: config-ml

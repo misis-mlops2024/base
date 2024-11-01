@@ -1,13 +1,8 @@
 FROM python:3.9-slim
 
 RUN pip install --upgrade pip 
-RUN apt -y update && apt -y install git
-RUN git clone https://github.com/misis-mlops2024/base.git
-COPY model.pkl /base/models/
-
-WORKDIR /base
-RUN pip install --upgrade pip 
-RUN python setup.py install
+COPY requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
+COPY online_inference.py /online_inference.py
 
-ENTRYPOINT [ "fastapi", "run", "src/inference/online_inference.py", "--port", "80"]
+ENTRYPOINT [ "fastapi", "run", "/online_inference.py", "--port", "80"]

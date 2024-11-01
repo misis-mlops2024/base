@@ -1,0 +1,24 @@
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: fastapi-ml
+  namespace: misis
+  labels:
+    app: fastapi-ml
+spec:
+  containers:
+    - image: l3lush/online_inference:v3
+      name: fastapi-ml
+      ports:
+        - containerPort: 80
+      env:
+      - name: AWS_ACCESS_KEY_ID
+        value: "YCAJE7EasWFd2LlH_j9tbt1Ar"
+      - name: AWS_SECRET_ACCESS_KEY
+        value: "YCP5frOh73GPSCHB8_1OhKw7Nk259ak4wILSFhoF"
+      - name: MLFLOW_TRACKING_URI
+        value: "http://89.169.171.107:8000"
+      - name: MLFLOW_S3_ENDPOINT_URL
+        value: "https://storage.yandexcloud.net/"
+      # command: ["echo"]
+      # args: ["$(MLFLOW_S3_ENDPOINT_URL) $(MLFLOW_TRACKING_URI)"]

@@ -31,6 +31,9 @@ start = EmptyOperator(
     dag=dag,
 )
 
-docker_op = DockerOperator(task_id="docker_hello_world", image="hello-world")
+docker_op = DockerOperator(
+    task_id="docker_hello_world",
+    image="hello-world"
+)
 
 start >> docker_op
