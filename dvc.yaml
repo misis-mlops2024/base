@@ -1,0 +1,26 @@
+params:
+  - params.yaml
+stages:
+  make_dataset:
+    cmd: 'python src/dataset.py params.yaml'
+    deps:
+    - src/dataset.py
+    params:
+    - data_params
+    - sql_params
+    outs:
+    - ${data_params.train_data_path}
+    - ${data_params.test_data_path}
+  train_model:
+    cmd: 'python src/modeling/train.py params.yaml'
+    deps:
+    - src/modeling/train.py
+    - ${data_params.train_data_path}
+    - ${data_params.test_data_path}
+    params:
+    - train_params
+    - sql_params
+    outs:
+    - ${train_params.model_path}
+    metrics:
+    - ${train_params.metrics_path}

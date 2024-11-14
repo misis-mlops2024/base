@@ -1,0 +1,28 @@
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata:
+  name: fastapi-ml
+  labels:
+    app: fastapi-ml
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: fastapi-ml
+  template:
+    metadata:
+      name: fastapi-ml
+      labels:
+        app: fastapi-ml
+    spec:
+      containers:
+        - image: l3lush/online_inference:v3
+          name: fastapi-ml
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 80 
+            initialDelaySeconds: 5
+            periodSeconds: 5

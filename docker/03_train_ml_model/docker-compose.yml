@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  mysql_db:
+    container_name: mysql_container
+    image: mysql:8
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: stage
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_TCP_PORT: 3306
+    volumes:
+      - C:\Users\anana\Desktop\projs\2024\mlops_course\data\mysql:/var/lib/mysql/
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    networks:
+      - 03_train_ml_model_mysql
+
+  train_model:
+    build:
+      dockerfile: ./train_model.Dockerfile
+    container_name: train_model_container
+    depends_on: 
+    - mysql_db
+    networks:
+      - 03_train_ml_model_mysql
+
+
+volumes:
+  mysql-data:
+
+networks:
+  03_train_ml_model_mysql:
+    driver: bridge

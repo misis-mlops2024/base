@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-ml
+  labels:
+    app: fastapi
+data:
+  config.yaml: |
+    val1: 123453452345
+    kekek: 1523452345345
+  another.yaml: |
+    your entry

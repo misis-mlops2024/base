@@ -1,0 +1,6 @@
+FROM apache/airflow:2.9.0
+
+RUN pip install --upgrade pip && \
+    pip install apache-airflow-providers-docker==3.14.0
+USER root
+ENV PYTHONPATH=/home/airflow/.local/lib/python3.12/site-packages
