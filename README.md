@@ -8,13 +8,14 @@
 Ссылка - [тык](https://docs.google.com/spreadsheets/d/1mSGB87lscCV_SEV8mty0V5Y0cbYt3EdKplVU3eWJG0o/edit?usp=sharing)
 
 ## Дедлайны по лабам
-| Номер лабы | Soft Deadline ☀️ | Hard Deadline ⚡ | 
+| Номер лабы | Soft Deadline ☀️   | Hard Deadline ⚡  | 
 |------------|-------------------|------------------|
 | 1 Git      | 13.10.2024 23:59  | 22.12.2024 23:59 |
 | 2 Libs     | 13.10.2024 23:59  | 22.12.2024 23:59 |
 | 3 DVC      | 20.10.2024 23:59  | 22.12.2024 23:59 | 
 | 4 Airflow  | 10.11.2024 23:59  | 22.12.2024 23:59 | 
 | 5 CICD     | 17.11.2024 23:59  | 22.12.2024 23:59 |
+| 6 Final    | 22.12.2024 23:59  | 22.12.2024 23:59 |
 
 Repo made with cookiecutter for MLOps NUST MISIS course
 
